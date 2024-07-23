@@ -13,8 +13,15 @@ namespace CommonSystem2_API.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("char(36)")
+                    .IsRequired();
+
                 entity.Property(e => e.IsActive)
                       .HasColumnName("IsActive")
                       .HasColumnType("bit")

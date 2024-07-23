@@ -63,12 +63,20 @@ builder.Services.AddMvc().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null; // forces Pascal case
 });
 
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+//               sqlOptions =>
+//               {
+//                   sqlOptions.EnableRetryOnFailure(5);
+//               }));
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-               sqlOptions =>
-               {
-                   sqlOptions.EnableRetryOnFailure(5);
-               }));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21)), // Adjust to your MySQL version
+        mySqlOptions =>
+        {
+            mySqlOptions.EnableRetryOnFailure(5);
+        }));
 
 // Configure Azure AD authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
